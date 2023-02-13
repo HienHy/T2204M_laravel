@@ -14,5 +14,12 @@ class WebController extends Controller
     public function aboutUs(){
         return view("about-us");
     }
+
+
+    public function listProducts(){
+        return view("list-products");
+    }    public function addProducts(){
+        return view("add-products");
+    }
     //
 }
