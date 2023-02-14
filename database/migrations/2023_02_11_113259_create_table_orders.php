@@ -16,11 +16,9 @@ class CreateTableOrders extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->decimal('grand_total',12,4)->default(0);
-            $table->dateTime('order_date');
-            $table->boolean('status')->default(true);
+            $table->tinyInteger('status');
             $table->text('shipping_address');
             $table->string('customer_tell',20);
-
             $table->timestamps();
         });
     }

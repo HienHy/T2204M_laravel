@@ -16,10 +16,6 @@ class WebController extends Controller
     }
 
 
-    public function listProducts(){
-        return view("list-products");
-    }    public function addProducts(){
-        return view("add-products");
-    }
+
     //
 }

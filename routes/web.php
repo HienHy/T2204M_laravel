@@ -19,8 +19,10 @@ Route::get("/",[\App\Http\Controllers\WebController::class,"home"]);
 
 
 Route::get("/about-us",[\App\Http\Controllers\WebController::class,"aboutUs"]);
-Route::get("/list-products",[\App\Http\Controllers\WebController::class,"listProducts"]);
-Route::get("/add-products",[\App\Http\Controllers\WebController::class,"addProducts"]);
+Route::get("/admin/product",[\App\Http\Controllers\ProductController::class,"listProducts"]);
+Route::get("/admin/product/create",[\App\Http\Controllers\ProductController::class,"create"]);
+Route::post("/admin/product/create",[\App\Http\Controllers\ProductController::class,"store"]);
+
 
 
 
