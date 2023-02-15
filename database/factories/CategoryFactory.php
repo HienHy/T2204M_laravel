@@ -17,6 +17,8 @@ class CategoryFactory extends Factory
 
             'name'=>$this->faker->unique()->name,
 
+
+
             //
         ];
     }
