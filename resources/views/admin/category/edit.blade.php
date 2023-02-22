@@ -1,11 +1,11 @@
 @extends("admin.layout")
 <!-- tham so 1 lua chon, tham so 2 thay doi -->
-@section("title","Create Category")
+@section("title","Edit Category")
 
 @section("content-header")
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Create category</h1>
+            <h1 class="m-0 text-dark">Edit</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -24,20 +24,25 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" method="post" action="{{url('/admin/category/create')}}" enctype="multipart/form-data">
+            <form role="form" method="post" action="{{route("category_edit",["category"=>$category->id])}}" enctype="multipart/form-data">
+                @method("PUT")
 
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label >Category Name</label>
-
-                        <input type="text" value="{{old("name")}}" class="form-control  @error("name") is-invalid @enderror" name="name"  placeholder="Category name" required>
+                        <input value="{{$category->name}}" type="text" class="form-control @error("name") is-invalid @enderror" name="name"  placeholder="Category name" required>
                         @error("name")
                         <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label >Icon</label>
+                        <label >Icon
+
+                            <a href="{{$category->icon}}" target="_blank">
+                                <img src="{{$category->icon}}" class="img-bordered-sm" alt="" srcset="" width="50" height="50">
+                            </a>
+                        </label>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input name="icon" type="file" class="custom-file-input" >
@@ -47,6 +52,14 @@
                                 <span class="input-group-text" id="">Upload</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label >Status</label>
+
+                        <select class="form-control" name="status">
+                            <option @if($category->status) selected @endif value="1">Active</option>
+                            <option  @if(!$category->status) selected @endif value="0">Inactive</option>
+                        </select>
                     </div>
 
                 </div>

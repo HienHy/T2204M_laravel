@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
+use Database\Factories\OrderProductFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +18,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        Category::factory(100)->create();
+        Category::factory(100)->create();
         Product::factory(1000)->create();
+        Order::factory(50)->create();
+
+
         // \App\Models\User::factory(10)->create();
+
+        $orders = Order::all();
+        foreach ($orders as $order){
+            $num=random_int(1,10);
+            $products =Product::all()->random($num);
+            $grand_total=0;
+            foreach ($products as $product){
+                $qty =random_int(1,20);
+                $grand_total +=$qty * $product ->price;
+                DB::table('order_product')->insert([
+                   'order_id'=>$order ->id,
+                    'product_id'=>$product ->id,
+                     'qty'=>$qty,
+                    'price'=>$product ->price,
+
+                ]);
+            }
+            $order->update(['grand_total'=>$grand_total]);
+        }
+
+
     }
+
 }

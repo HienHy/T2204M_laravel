@@ -9,7 +9,7 @@
 @section("content-header")
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Create</h1>
+            <h1 class="m-0 text-dark">Edit product</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,20 +28,28 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" method="post" action="{{url('/admin/product/create')}}" enctype="multipart/form-data" >
+            <form role="form" method="post" action="{{route("product_edit",["product"=>$product->id])}}" enctype="multipart/form-data" >
+
+                @method("PUT")
 
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label >Product Name</label>
-                        <input value="{{old("name")}}" type="text" class="form-control @error("name") is-invalid @enderror" name="name"   required>
+                        <input value="{{$product->name}}" type="text" class="form-control @error("name") is-invalid @enderror" name="name"   required>
 
                         @error("name")
                         <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Thumbnail</label>
+                        <label for="exampleInputFile">Thumbnail
+
+                            <a href="{{$product->thumbnail}}" target="_blank">
+                                <img src="{{$product->thumbnail}}" class="img-bordered-sm" alt="" srcset="" width="50" height="50">
+                            </a>
+
+                        </label>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input name="thumbnail" type="file" class="custom-file-input" id="exampleInputFile">
@@ -55,14 +63,14 @@
 
                     <div class="form-group">
                         <label >Price</label>
-                        <input type="number" value="{{old("price")}}" class="form-control @error("price") is-invalid @enderror " name="price"  placeholder="Price" required>
+                        <input type="number" value="{{$product->price}}" class="form-control @error("price") is-invalid @enderror " name="price"  placeholder="Price" required>
                         @error("price")
                         <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label >Qty</label>
-                        <input type="number" value="{{old("qty")}}" class="form-control @error("qty") is-invalid @enderror" name="qty"  placeholder="Qty" required>
+                        <input type="number" value="{{$product->qty}}" class="form-control @error("qty") is-invalid @enderror" name="qty"  placeholder="Qty" required>
                         @error("qty")
                         <p class="text-danger">{{$message}}</p>
                         @enderror
@@ -71,14 +79,14 @@
                         <label >Unit</label>
 
                         <select class="form-control" name="unit">
-                            <option @if(old("unit")=='Item') selected @endif value="Item">Item</option>
-                            <option  @if(old("unit")=='Box') selected @endif value="Box">Box</option>
+                            <option @if($product->unit=='Item') selected @endif value="Item">Item</option>
+                            <option  @if($product->unit=='Box') selected @endif value="Box">Box</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label >Description</label>
                         <textarea type="text" class="form-control" name="description"  placeholder="Description">
-                      {{old("description")}}
+                      {{$product->description}}
                         </textarea>
                     </div>
 
@@ -86,7 +94,7 @@
                         <label >Category</label>
                         <select name="category_id" class="form-control select2bs4">
                             @foreach($categories as $item)
-                                <option @if(old("category_id")== $item->id) selected @endif value="{{$item->id}}">
+                                <option @if($product->category_id== $item->id) selected @endif value="{{$item->id}}">
 
                                     {{$item->name}}
                                 </option>
@@ -95,6 +103,16 @@
 
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label >Status</label>
+
+                        <select class="form-control" name="status">
+                            <option @if($product->status) selected @endif value="1">Active</option>
+                            <option  @if(!$product->status) selected @endif value="0">Inactive</option>
+                        </select>
+                    </div>
+
                 </div>
                 <!-- /.card-body -->
 

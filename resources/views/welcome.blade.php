@@ -20,7 +20,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{$orders_count}}</h3>
 
                     <p>New Orders</p>
                 </div>
@@ -35,9 +35,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    <h3>{{number_format($order_sum_grand_total)   }}<sup style="font-size: 20px"> </sup></h3>
 
-                    <p>Bounce Rate</p>
+                    <p>Sum grand total</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -50,9 +50,9 @@
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>{{$products_count}}</h3>
 
-                    <p>User Registrations</p>
+                    <p>Product</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
@@ -65,9 +65,9 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>{{$sum_qty}}</h3>
 
-                    <p>Unique Visitors</p>
+                    <p>Items</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
@@ -104,8 +104,13 @@
                     <div class="tab-content p-0">
                         <!-- Morris chart - Sales -->
                         <div class="chart tab-pane active" id="revenue-chart"
-                             style="position: relative; height: 300px;">
+                             style="position: relative; height: 900px;">
                             <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
+                        </div>
+
+                        <div class="chart tab-pane active" id="revenue-chart"
+                             style="position: relative; height: 900px;">
+                            <canvas id="revenue-chart-canvas_date" height="300" style="height: 300px;"></canvas>
                         </div>
                         <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
                             <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
@@ -597,4 +602,86 @@
         <!-- right col -->
     </div>
     <!-- /.row (main row) -->
+@endsection
+@section("after_js")
+
+    <script>
+        var ctx = document.getElementById('revenue-chart-canvas').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {!! $categories_names !!},
+                datasets: [{
+                    label: '# of Votes',
+                    data: {!! $category_products_counts !!},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+    <script>
+        var ctx = document.getElementById('revenue-chart-canvas_date').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {!! $categories_names !!},
+                datasets: [{
+                    label: '# of Votes',
+                    data: {!! $arr !!},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
 @endsection

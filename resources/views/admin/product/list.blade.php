@@ -21,6 +21,41 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Bordered Table</h3>
+
+
+            <div class="card-tools">
+                <form action="{{url("/admin/product")}}" method="get">
+
+
+
+                    <div class="input-group input-group-sm" style="width: 550px;">
+
+                        <select name="category_id" class="mr-1">
+                            <option value="0">Choose category..</option>
+
+                            @foreach($categories as $item)
+                            <option @if(app("request")->input("category_id")==$item->id) selected @endif  value="{{$item->id}}"> {{$item->name}}
+
+                            </option>
+                            @endforeach
+
+
+                        </select>
+                        <input type="number" value="{{app("request")->input("lowest_price")}}" name="lowest_price" class="form-control float-right" placeholder="Lowest Price">
+                        <input type="number" value="{{app("request")->input("highest_price")}}" name="highest_price" class="form-control float-right" placeholder="Highest Price">
+
+
+                    <input type="text" value="{{app("request")->input("search")}}" name="search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                </form>
+
+            </div>
+
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -32,9 +67,10 @@
                     <th>Thumbnail</th>
                     <th>Price</th>
                     <th>Qty</th>
-                    <th>Unit</th>
+                    <th>Category</th>
 
                     <th style="width: 40px">Status</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,10 +78,19 @@
                     <tr>
                         <td>{{$item->id}}</td>
                         <td>{{$item->name}}</td>
-                        <td><img src="{{$item->thumbnail}}" alt="" srcset="" width="80"> </td>
+                        <td><img src="{{$item->thumbnail}}" alt="" srcset="" width="80" height="80"> </td>
                         <td>{{$item->price}}</td>
                         <td>{{$item->qty}}</td>
-                        <td>{{$item->unit}}</td>
+                        <td>{{$item->Category->name}}
+
+
+                            <span class="badge bg-info">
+                                                        {{$item->Category ->Products->count()}}
+
+                            </span>
+                        </td>
+
+
                         <td>
                             @if($item->status)
                                 <span class="badge bg-success">Active</span>
@@ -54,6 +99,20 @@
 
                             @endif
                             </td>
+
+                        <td>
+                            <a href="{{route("product_edit",["product"=>$item->id])}}" class="btn-outline-info btn">Edit</a>
+                            <form method="post" action="{{route("product_delete",['product'=>$item->id])}}">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" onclick=" return confirm('ban chac muon xoa san pham')" class="btn btn-outline-warning">
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </td>
                     </tr>
 
                 @endforeach
@@ -63,7 +122,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-            {!! $data->links("pagination::bootstrap-4") !!}
+            {!! $data->appends(app("request")->input())->links("pagination::bootstrap-4") !!}
         </div>
     </div>
 
